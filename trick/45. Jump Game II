@@ -1,0 +1,42 @@
+class Solution {
+  
+    /*
+    The main idea is based on greedy. Let's say the range of the current jump is [curBegin, curEnd], curFarthest is the farthest point that all points in [curBegin, curEnd] can reach. Once the current point reaches curEnd, then trigger another jump, and set the new curEnd with curFarthest, then keep the above steps, as the following:
+*/
+public int jump(int[] A) {
+	int jumps = 0, curEnd = 0, curFarthest = 0;
+	for (int i = 0; i < A.length - 1; i++) {
+		curFarthest = Math.max(curFarthest, i + A[i]);
+		if (i == curEnd) {                ////
+			jumps++;                      ////    i=len-1 is the end and jumps++
+			curEnd = curFarthest;         ////  & curEnd  only update when i=curEnd
+		}                                 ////  &  jumps  only update when i=curEnd
+	}
+	return jumps;
+}
+    
+    
+    
+    public int jump_SLOW(int[] nums) {
+        int[] dp = new int[nums.length];
+        for(int i=0; i<nums.length; i++){
+            dp[i] = Integer.MAX_VALUE;
+        }
+        dp[nums.length-1] = 0;
+        if(nums.length<2){
+            return 0;
+        }
+        for(int i=nums.length-2; i>=0 ; i--){
+            if(nums[i]+i>=nums.length-1){
+                dp[i] = 1;
+            }else{
+                for(int j=1; j<=nums[i] && i+j<nums.length; j++){
+                    if(dp[i+j]+1>=0){
+                        dp[i] = Math.min(dp[i], dp[i+j]+1);
+                    }
+                }
+            }
+        }
+        return dp[0];
+    }
+}
