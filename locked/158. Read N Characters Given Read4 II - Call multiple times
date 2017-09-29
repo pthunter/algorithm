@@ -1,0 +1,48 @@
+/*
+The API: int read4(char *buf) reads 4 characters at a time from a file.
+
+The return value is the actual number of characters read. For example, it returns 3 if there is only 3 characters left in the file.
+
+By using the read4 API, implement the function int read(char *buf, int n) that reads n characters from the file.
+
+Note:
+The read function may be called multiple times.
+
+Hide Company Tags
+ Bloomberg Google Facebook
+Hide Tags
+ String
+Hide Similar Problems
+ (E) Read N Characters Given Read4
+思路：
+又是一开始没看懂题。变化是这样：比如先call了n=3，然后call n=5，那么第一次就读入了4个char，第二次call应该把上一次的最后一个char拿来。也就是说要有个cache取缓存已读取的字符，然后从这个cache里面取。
+每次读4个字符，放入 cache，然后
+in = Math.min(n - total, buff.size()) 这个是精髓，这样就知道还需要多少个字符了。如果是in=0了，那么说明已经够了或者没字符了，这样就不用再读取了。否则无论哪个大，接下来都需要往buf中放入in个字符（可能是剩的少，也有可能要求的少）。
+[java] view plain copy
+*/
+/* The read4 API is defined in the parent class Reader4. 
+      int read4(char[] buf); */  
+  
+public class Solution extends Reader4 {  
+    /** 
+     * @param buf Destination buffer 
+     * @param n   Maximum number of characters to read 
+     * @return    The number of characters read 
+     */  
+    LinkedList<Character> buff = new LinkedList<Character>();  /////////// Queue !! cache for mulitple calls
+    public int read(char[] buf, int n) {  
+        int total = 0;  
+        while(true){  
+            char[] temp = new char[4];  
+            int in = read4(temp);  
+            for(int i = 0; i < in; i++) buff.add(temp[i]);  
+              
+            // 判断还需要写入多少个到结果， 比如读了4个，但是只要3个；或者要4个，只有3个了。  
+            in = Math.min(n - total, buff.size());  
+              
+            for(int i = 0; i < in; i++) buf[total++] = buff.poll();  
+            if(in == 0) break;  
+        }  
+        return total;  
+    }  
+}  
