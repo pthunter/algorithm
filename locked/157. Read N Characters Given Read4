@@ -1,0 +1,47 @@
+/*
+The API: int read4(char *buf) reads 4 characters at a time from a file.
+
+The return value is the actual number of characters read. For example, it returns 3 if there is only 3 characters left in the file.
+
+By using the read4 API, implement the function int read(char *buf, int n) that reads n characters from the file.
+
+Note:
+The read function will only be called once for each test case.
+
+Hide Company Tags
+ Facebook
+Hide Tags
+ String
+Hide Similar Problems
+ (H) Read N Characters Given Read4 II - Call multiple times
+思路：
+一开始没看懂题。看了好几个人的blog才知道是怎么回事。首先输入数组的长度我们是不知道的。
+read4这个API中的参数是读了的char，也就是每次read4之后返回的char[4]是从给定文件中读的。
+然后为啥是两参数？char[] buf和上面的一个道理，是输出的数组，而不是源文件；给int n是因为这个文件的长度可能比我们给的大，这样我们只需要读入N个字符到 char[] buf中；也有可能短，那么我们只能读完所有的文件并且返回文件长度。
+[java] view plain copy
+*/
+/* The read4 API is defined in the parent class Reader4. 
+      int read4(char[] buf); */  
+  
+public class Solution extends Reader4 {     
+    /**   
+     * @param buf Destination buffer   
+     * @param n   Maximum number of characters to read   
+     * @return    The number of characters read   
+     */     
+    public int read(char[] buf, int n) {     
+        int count = 0;     
+        char[] mybuf = new char[4];     
+        while(count<n){     
+            int num = read4(mybuf);     
+            if(num == 0) break;     
+            int index = 0;     
+            while(index < num && count < n){     
+                buf[count++] = mybuf[index++];     
+            }     
+        }     
+        return count;     
+    }     
+}   
+// case 1 有数据，n个了; while循环管  
+// case 2 数据不够n个，read4返回了0。 有一行代码管  
