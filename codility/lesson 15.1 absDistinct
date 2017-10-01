@@ -1,0 +1,44 @@
+# you can write to stdout for debugging purposes, e.g.
+# print "this is a debug message"
+
+def solution(A):
+    # write your code in Python 2.7
+    minval = abs(A[0])
+    minidx = 0
+    for i in xrange(1, len(A)):
+        if minval>abs(A[i]):
+            minval = abs(A[i])
+            minidx = i
+    upper = minidx
+    lower = minidx
+    count = 1
+    currval = minval
+    while(upper<len(A) or lower>=0):
+        if(upper>=len(A)):
+            if(abs(A[lower])>currval):
+                count += 1
+                currval = abs(A[lower])
+            lower -= 1
+        elif(lower<0):
+            if(abs(A[upper])>currval):
+                count += 1
+                currval = abs(A[upper])
+            upper += 1
+        elif(abs(currval)==abs(A[upper])): # 
+            upper += 1
+        elif (abs(currval)==abs(A[lower])):
+            lower -= 1
+        elif (abs(A[upper])<abs(A[lower])):
+            currval = abs(A[upper])
+            upper += 1
+            count += 1
+        elif (abs(A[upper])>abs(A[lower])):
+            currval = abs(A[lower])
+            lower -= 1
+            count += 1
+        else:          # upper = lower
+            currval = abs(A[upper])
+            count += 1
+            upper += 1
+            lower -= 1
+    return count
