@@ -1,0 +1,62 @@
+'''
+You are going to build a stone wall. The wall should be straight and N meters long, and its thickness should be constant; however, it should have different heights in different places. The height of the wall is specified by a zero-indexed array H of N positive integers. H[I] is the height of the wall from I to I+1 meters to the right of its left end. In particular, H[0] is the height of the wall's left end and H[N−1] is the height of the wall's right end.
+
+The wall should be built of cuboid stone blocks (that is, all sides of such blocks are rectangular). Your task is to compute the minimum number of blocks needed to build the wall.
+
+Write a function:
+
+def solution(H)
+
+that, given a zero-indexed array H of N positive integers specifying the height of the wall, returns the minimum number of blocks needed to build it.
+
+For example, given array H containing N = 9 integers:
+
+  H[0] = 8    H[1] = 8    H[2] = 5
+  H[3] = 7    H[4] = 9    H[5] = 8
+  H[6] = 7    H[7] = 4    H[8] = 8
+the function should return 7. The figure shows one possible arrangement of seven blocks.
+'''
+# you can write to stdout for debugging purposes, e.g.
+# print "this is a debug message"
+
+def solution(H):
+    # write your code in Python 2.7
+    if(len(H)==0):
+        return 0
+    left = [0]*len(H)   # how much can extend to left
+    right = [0]*len(H)  # how much can extend to right
+
+    count = len(H)
+    
+    left[0] = 0
+    stackleft = [0]
+    for i in range(1,len(H)):
+        if(H[i]>H[i-1]):
+            left[i] = i
+            stackleft.append(i)
+        else:
+            
+            while len(stackleft)>0 and H[stackleft[-1]]>=H[i]:
+                idx = stackleft.pop()
+                if(H[idx]==H[i]):
+                    count -= 1
+            left[i] = idx
+            #stackleft.append(idx)
+            stackleft.append(i)
+    
+    return count
+    
+    '''
+    right[len(H)-1] = len(H)-1
+    stackright = [len(H)-1]
+    for i in range(len(H)-2,-1,-1):
+        if(H[i]>H[i+1]):
+            right[i] = i
+            stackright.append(i)
+        else:
+            while len(stackright)>0 and H[stackright[-1]]>=H[i]:
+                idx = stackright.pop()
+            right[i] = idx
+            #stackright.append(idx)
+            stackright.append(i)
+    '''            
