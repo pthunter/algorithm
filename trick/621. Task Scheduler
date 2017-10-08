@@ -1,0 +1,72 @@
+    
+    /*
+    
+      1 2 ... n
+      A B C E x     
+      A B D x x           mav_val
+      A B                 
+      
+    */
+    // SMART !!!!
+    public int leastInterval(char[] tasks, int n) {
+        int[] map = new int[26];
+        for (char c: tasks)
+            map[c - 'A']++;
+        Arrays.sort(map);
+        int max_val = map[25] - 1, idle_slots = max_val * n;
+        for (int i = 24; i >= 0 && map[i] > 0; i--) {
+            idle_slots -= Math.min(map[i], max_val);
+        }
+        return idle_slots > 0 ? idle_slots + tasks.length : tasks.length;
+    }
+    
+    
+    
+    
+    /*
+    
+    AAABBBCCC              n=1
+    
+    MAP: 00000000000000000000000333
+    MAP: 00000000000000000000000223
+    MAP: 00000000000000000000000122
+    MAP: 00000000000000000000000111
+    MAP: 00000000000000000000000011
+    MAP: 00000000000000000000000001
+    
+     solution 1:  ABC ABC ABC
+    *solution 2:  AB  CA  BC  AB  C
+    
+    */
+    
+    
+    // re-sort each time
+    public int leastInterval_sort(char[] tasks, int n) {
+        int[] map = new int[26];
+        for (char c: tasks)
+            map[c - 'A']++;
+        Arrays.sort(map);
+        int time = 0;
+        while (map[25] > 0) {
+            String tt = "";
+            for(int i=0; i<26; i++){
+                tt+=map[i];
+            }
+            System.out.println("MAP: "+tt);
+            int i = 0;
+            while (i <= n) {                       // no matter if reach n, alwasy time++
+                                                   // but if alreay >n , do we still want ?????????????????????????????
+                if (map[25] == 0)
+                    break;
+                if (i < 26 && map[25 - i] > 0)     // only reduce when map[25-i]>0, otherwise it's X
+                                              // don't know which char [25] is ?
+                                    //System.out.println("char: "+ (char)('A'+(25-i)));
+                    map[25 - i]--;
+                time++;
+                i++;
+            }
+            Arrays.sort(map);
+        }
+        return time;
+    }
+    
