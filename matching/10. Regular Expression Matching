@@ -1,3 +1,20 @@
+/*
+
+To match a special character such as '.' and ‘*’ use the escape character ‘\’. For example:
+
+•
+To match fortinet.com, the regular expression will be: fortinet\.com
+In Perl regular expressions, ‘*’ means match 0 or more times of the character before it, 
+not 0 or more times of any character. For example:
+
+•
+forti*.com matches fortiiii.com but does not match fortinet.com
+To match any character 0 or more times, use ‘.*’ where ‘.’ means any character and the ‘*’ means 0 or more times. 
+For example, the wildcard match pattern forti*.com will therefore be fort.*\.com.
+
+
+*/
+
 /*  
     
     This Solution use 2D DP. beat 90% solutions, very simple.
