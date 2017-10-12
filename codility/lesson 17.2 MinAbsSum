@@ -1,3 +1,11 @@
+
+# problem: a list of integer, put + or - on each, to reach minimum abs sum
+# idea, group two, try to make them sumation equal ( try to reach sum(abs[A])/2 )
+# 
+# slow solution:   dp[x] represent all possible sums, see if it reach S//2 ==> each num loop from S to 0
+# faster solution: for duplicate, count it,  ==> and only loop once for one uniqe number
+
+
 # you can write to stdout for debugging purposes, e.g.
 # print "this is a debug message"
 
